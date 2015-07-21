@@ -4,8 +4,22 @@
   <div class="container">
     <h1>Voting App</h1>
     <p class="lead">Create custom polls!</p>
+    <a class="btn btn-success" ng-hide="isLoggedIn()" ng-href="/signup">Sign Up</a>
+    <a class="btn btn-success" ng-show="isLoggedIn()" ng-href="/createpoll">Create poll</a>
+    <a class="btn btn-primary" ng-show="isLoggedIn()" ng-href="/mypolls">My polls</a>
   </div>
 </header>
+
+<!--div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Features:</h1>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
+        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
+      </ul>
+    </div>
+  </div>
+</div-->
 
 <footer class="footer">
   <div class="container">

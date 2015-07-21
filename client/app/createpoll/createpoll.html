@@ -1,0 +1,20 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<header class="hero-unit" id="banner" ng-show="isLoggedIn()">
+  <div class="container">
+    <h1>Create Poll</h1>
+    <br />
+    <form novalidate name="form" ng-submit="submit()">
+        <label for="question">Question:</label>
+        <!-- NG-MODEL -->
+        <div class="form-group">
+            <input type="text" class="form-control" id="question" placeholder="What is your favourite food?" ng-model="poll['question']" required>
+        </div>
+        <label for="option1">Options:</label>
+        <div class="form-group" id="options">
+            <input ng-repeat="option in options" type="text" id="{{$index}}" placeholder="{{option.name}}" class="form-control" ng-model="poll[option.name]" required>
+        </div>
+        <a class="btn btn-default" ng-click="addOption()">More Options</a>
+        <button type="submit" class="btn btn-default" ng-disabled="form.$invalid">Submit</button>
+    </form>
+  </div>
+</header>
