@@ -41,8 +41,34 @@ exports.show = function(req, res, next){
       res.end(JSON.stringify(poll));
     });
   } else {
-    res.end("Invalid id.");
-  } 
+    res.status(404).send("Not found");
+  }
+};
+
+exports.answer = function(req, res, next){
+  var id = parseInt(req.params.id);
+  if (typeof id === 'number') {
+    Poll.findOne({_id: id}, function(err, poll) {
+      if (err) {
+        res.end();
+      }
+      if (req.body.user !== null && req.body.poll_option > 0 && req.body.poll_option < poll.poll_options.length) {
+        poll.results.push({user: req.body.user, poll_option: req.body.poll_option});
+        poll.markModified('results');
+        poll.save(function(err, updatedPoll){
+          if (err) {
+            res.end();
+          } else {
+            res.end(JSON.stringify(updatedPoll));
+          }
+        });
+      } else {
+        res.end();
+      }
+    });
+  } else {
+    res.status(404).send("Not found");
+  }
 };
 
 /*

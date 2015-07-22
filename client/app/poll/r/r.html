@@ -1,3 +1,7 @@
-<div class="col-md-12">
-This is the r view.
-</div>
+<div ng-include="'components/navbar/navbar.html'"></div>
+<header class="hero-unit" id="banner">
+    <div>
+        <h1>{{question}}</h1>
+        <a ng-show="ok" class="btn btn-primary" ng-href="/poll/{{id}}/">See voting page</a>
+    </div>
+</header>
