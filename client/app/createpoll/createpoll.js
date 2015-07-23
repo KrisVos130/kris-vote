@@ -5,6 +5,7 @@ angular.module('workspaceApp')
     $routeProvider
       .when('/createpoll', {
         templateUrl: 'app/createpoll/createpoll.html',
-        controller: 'CreatepollCtrl'
+        controller: 'CreatepollCtrl',
+        authenticate: true
       });
   });

@@ -3,7 +3,6 @@
 angular.module('workspaceApp')
   .controller('CreatepollCtrl', function ($scope, $http, Auth, $location) {
     $scope.poll = {};
-    $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.options = [{name: 'option1'}, {name: 'option2'}];
     var options = 2;
     $scope.addOption = function(){
