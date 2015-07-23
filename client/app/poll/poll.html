@@ -1,7 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <header class="hero-unit" id="banner">
     <div>
-        <h1>{{question}}</h1>
+        <h1 id="question">{{question}}</h1>
         <ul id="options" ng-show="ok">
             <li ng-repeat="option in poll_options" ng-click="click($index)" class="option-li" id="{{$index}}">{{option}}</li>
         </ul>

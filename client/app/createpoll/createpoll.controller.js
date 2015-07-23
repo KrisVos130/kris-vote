@@ -14,16 +14,25 @@ angular.module('workspaceApp')
     $scope.submit = function(){
       if (!$scope.submitted) {
         $scope.submitted = true;
-        var error = false;
+        $("#errors").children().remove();
+        var error = [];
         if ($scope.poll["question"] === undefined | null || ($scope.poll["question"].length === 0)) {
-            error = true;
+            error.push("Invalid question");
         }
+        var temp_options = [];
         for (var i = 1; i < options + 1; i++) {
+          temp_options.push($scope.poll["option" + i]);
           if ($scope.poll["option" + i] === undefined | null || ($scope.poll["option" + i].length === 0)) {
-            error = true;
+            error.push("Invalid option");
           }
         }
-        if (!error) {
+        temp_options = temp_options.sort();
+        for (var i = 0; i < temp_options.length; i++) {
+          if (temp_options[i] === temp_options[i + 1]) {
+            error.push("Duplicate option");
+          }
+        }
+        if (error.length === 0) {
           $scope.poll = sortObject($scope.poll);
           var poll = {};
           poll.user = Auth.getCurrentUser()["_id"];
@@ -36,8 +45,13 @@ angular.module('workspaceApp')
           console.log(poll);
           $http.post('/api/polls/create', poll).success(function(stuff){
             // Redirect
-            $location.path('/');
+            $location.path('/poll/' + parseInt(stuff));
           });
+        } else {
+          error.forEach(function(curr_err){
+            $("<li>" + curr_err + "</li>").appendTo("#errors");
+          });
+          $scope.submitted = false;
         }
       }
     }

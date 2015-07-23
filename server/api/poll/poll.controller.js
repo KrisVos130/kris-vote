@@ -27,7 +27,7 @@ exports.create = function(req, res, next){
       var newCounter = {seq: counter[0]._doc.seq + 1};
       Counter.update({_id: "poll_id"}, newCounter, {upsert: true}, function(err){
         if (err) console.log("ERROR! " + err);
-        res.end();
+        res.end(newPoll._id + "");
       });
     });
   });
@@ -52,7 +52,7 @@ exports.answer = function(req, res, next){
       if (err) {
         res.end();
       }
-      if (req.body.user !== null && req.body.poll_option > 0 && req.body.poll_option < poll.poll_options.length) {
+      if (req.body.user !== null && req.body.poll_option > -1 && req.body.poll_option < poll.poll_options.length) {
         poll.results.push({user: req.body.user, poll_option: req.body.poll_option});
         poll.markModified('results');
         poll.save(function(err, updatedPoll){

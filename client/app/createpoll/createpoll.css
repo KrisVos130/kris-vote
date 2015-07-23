@@ -1,0 +1,11 @@
+#errors {
+    padding: 0;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 30px;
+}
+
+#errors li {
+    list-style-type: none;
+    color: red;
+}

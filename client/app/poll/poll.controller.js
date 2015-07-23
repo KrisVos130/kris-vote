@@ -9,41 +9,36 @@ angular.module('workspaceApp')
     var ready = false;
     var id = $routeParams.id;
     $scope.id = $routeParams.id;
-    var user = Auth.getCurrentUser();
-    if (Auth.isLoggedIn) {
-      user.$promise.then(function(user){
-        $http.get('/api/polls/' + id).success(function(poll){
-          if (poll[0] !== undefined) {
-            poll[0].results.map(function(result){
-              //console.log(Auth.getCurrentUser());
-              if (result.user === user._id) {
-                answered = true;
-              }
-            });
-            if (!answered) {
-              $scope.question = poll[0].question;
-              $scope.poll_options = poll[0].poll_options;
-              $scope.ok = true;
-            } else {
-              $location.path('/poll/' + id + '/r');
+    Auth.getCurrentUser().$promise.then(function(user){
+      $http.get('/api/polls/' + id).success(function(poll){
+        if (poll[0] !== undefined) {
+          poll[0].results.map(function(result){
+            //console.log(Auth.getCurrentUser());
+            if (result.user === user._id) {
+              answered = true;
             }
+          });
+          if (!answered) {
+            $scope.question = poll[0].question;
+            $scope.poll_options = poll[0].poll_options;
+            $scope.ok = true;
           } else {
-            $scope.question = "404 - Poll not found.";
-            $scope.ok = false;
+            $location.path('/poll/' + id + '/r');
           }
-        }).error(function(error){
-          if (error === "Not found") {
-            $scope.question = "404 - Poll not found.";
-            $scope.ok = false;
-          } else {
-            $scope.question = error;
-            $scope.ok = false;
-          }
-        });
+        } else {
+          $scope.question = "404 - Poll not found.";
+          $scope.ok = false;
+        }
+      }).error(function(error){
+        if (error === "Not found") {
+          $scope.question = "404 - Poll not found.";
+          $scope.ok = false;
+        } else {
+          $scope.question = error;
+          $scope.ok = false;
+        }
       });
-    } else {
-      $location.path('/poll/' + id + '/r');
-    }
+    });
     
     var answer = -1;
     $scope.click = function(id){
