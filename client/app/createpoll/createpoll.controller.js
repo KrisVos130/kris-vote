@@ -41,7 +41,6 @@ angular.module('workspaceApp')
             poll.poll_options.push($scope.poll["option" + i]);
           }
           poll.results = [];
-          console.log(poll);
           $http.post('/api/polls/create', poll).success(function(stuff){
             // Redirect
             $location.path('/poll/' + parseInt(stuff));

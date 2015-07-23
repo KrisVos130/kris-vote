@@ -13,7 +13,6 @@ angular.module('workspaceApp')
       $http.get('/api/polls/' + id).success(function(poll){
         if (poll[0] !== undefined) {
           poll[0].results.map(function(result){
-            //console.log(Auth.getCurrentUser());
             if (result.user === user._id) {
               answered = true;
             }
@@ -57,7 +56,6 @@ angular.module('workspaceApp')
       if (answer > -1 && answer < $scope.poll_options.length && !$scope.submitted && !answered && $scope.ok) {
         $scope.submitted = true;
         var post = {user: Auth.getCurrentUser()["_id"], poll_option: answer};
-        console.log(post);
         $http.post("/api/polls/" + id + "/answer", post).success(function(stuff){
           $location.path('/poll/' + id + '/r');
         });

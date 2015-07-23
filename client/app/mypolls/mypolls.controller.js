@@ -16,9 +16,8 @@ angular.module('workspaceApp')
       $http.delete('/api/polls/remove/' + id).success(function(response){
         if (response === "Success!") {
           refreshPolls();
-          console.log("Success!");
         } else {
-          console.log("Something went wrong...");
+          alert("An error occured");
         }
       }).error(function(){
         alert("An error occured");

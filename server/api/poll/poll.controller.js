@@ -18,16 +18,13 @@ var Counter = mongoose.model('Counters',
 exports.create = function(req, res, next){
   Counter.find({_id: "poll_id"}, function(err, counter){
     var newPoll = new Poll(req.body);
-    console.log(counter[0]._doc.seq);
     newPoll._id = counter[0]._doc.seq + 1;
     newPoll.save(function(err, poll){
       if (err){ 
-        console.log("ERROR! " + err);
         return validationError(res, err); 
       }
       var newCounter = {seq: counter[0]._doc.seq + 1};
       Counter.update({_id: "poll_id"}, newCounter, {upsert: true}, function(err){
-        if (err) console.log("ERROR! " + err);
         res.end(newPoll._id + "");
       });
     });
