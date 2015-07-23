@@ -1,0 +1,13 @@
+.question-link {
+    float: left;
+    word-break: word-wrap;
+    overflow: auto;
+}
+
+.delete-button {
+    float: right;
+}
+
+table {
+    background-color: white !important;
+}

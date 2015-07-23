@@ -8,5 +8,7 @@ var router = express.Router();
 router.post('/create', controller.create);
 router.get('/:id', controller.show);
 router.post('/:id/answer', controller.answer);
+router.get('/user/:user', controller.user);
+router.delete('/remove/:id', auth.isAuthenticated(), controller.remove);
 
 module.exports = router;

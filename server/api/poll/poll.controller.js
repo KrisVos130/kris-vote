@@ -2,6 +2,7 @@
 
 var Poll = require('./poll.model');
 var mongoose = require('mongoose');
+var Auth = require("../../auth/auth.service.js")
 
 var validationError = function(res, err) {
   return res.json(422, err);
@@ -71,12 +72,27 @@ exports.answer = function(req, res, next){
   }
 };
 
-/*
-Counter.find({_id: "poll_id"}, function(err, counter){
-    newPoll._id = counter.seq + 1;
-    var newCounter = new Counter({_id: "poll_id", req: counter.seq + 1});
-    newCounter.save(function(){
-    
+exports.user = function(req, res, next){
+  var user = req.params.user;
+  if (typeof user === 'string') {
+    Poll.find({user: user}, function(err, poll) {
+      if (err) {
+        res.end([]);
+      } else {
+        res.end(JSON.stringify(poll));
+      }
     });
-});
-*/
+  } else {
+    res.status(404).send("Not found");
+  }
+};
+
+exports.remove = function(req, res, next){
+  var id = parseInt(req.params.id);
+  if (typeof id === 'number') {
+    Poll.find({_id: id}).remove().exec();
+    res.end("Success!");
+  } else {
+    res.status(404).send("Not found");
+  }
+};

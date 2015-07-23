@@ -1,1 +1,14 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>{{message}}</h1>
+    <br />
+    <!-- TABLE WITH ALL POLLS -->
+    <table class="table table-striped" id="results">
+      <tr ng-repeat="poll in polls"> <!-- Put ng-repeat inside of the tr -->
+        <td><a class="btn btn-link question-link" ng-href="../poll/{{poll._id}}">{{poll.question}}</a></td>
+        <td><button class="btn btn-danger delete-button" ng-click="delete(poll._id)">Delete</button></td>
+      </tr>
+    </table>
+  </div>
+</header>
