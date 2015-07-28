@@ -5,38 +5,39 @@ angular.module('workspaceApp')
     $scope.ok = false;
     $scope.buttonDisabled = true;
     $scope.submitted = false;
-    var answered = false;
     var ready = false;
     var id = $routeParams.id;
+    var ip = "";
+    var answered = false;
     $scope.id = $routeParams.id;
-    Auth.getCurrentUser().$promise.then(function(user){
-      $http.get('/api/polls/' + id).success(function(poll){
-        if (poll[0] !== undefined) {
-          poll[0].results.map(function(result){
-            if (result.user === user._id) {
-              answered = true;
-            }
-          });
-          if (!answered) {
-            $scope.question = poll[0].question;
-            $scope.poll_options = poll[0].poll_options;
-            $scope.ok = true;
-          } else {
-            $location.path('/poll/' + id + '/r');
+    $http.get('/api/polls/' + id).success(function(poll){
+      if (poll[0] !== undefined) {
+        poll[0].results.map(function(result){
+          console.log(result);
+          if (result.ip === poll[0].user_ip) {
+            answered = true;
           }
+        });
+        if (!answered) {
+          ip = poll[0].user_ip;
+          $scope.question = poll[0].question;
+          $scope.poll_options = poll[0].poll_options;
+          $scope.ok = true;
         } else {
-          $scope.question = "404 - Poll not found.";
-          $scope.ok = false;
+          $location.path('/poll/' + id + '/r');
         }
-      }).error(function(error){
-        if (error === "Not found") {
-          $scope.question = "404 - Poll not found.";
-          $scope.ok = false;
-        } else {
-          $scope.question = error;
-          $scope.ok = false;
-        }
-      });
+      } else {
+        $scope.question = "404 - Poll not found.";
+        $scope.ok = false;
+      }
+    }).error(function(error){
+      if (error === "Not found") {
+        $scope.question = "404 - Poll not found.";
+        $scope.ok = false;
+      } else {
+        $scope.question = error;
+        $scope.ok = false;
+      }
     });
     
     var answer = -1;
@@ -53,9 +54,9 @@ angular.module('workspaceApp')
     };
     
     $scope.submitAnswer = function(){
-      if (answer > -1 && answer < $scope.poll_options.length && !$scope.submitted && !answered && $scope.ok) {
+      if (answer > -1 && answer < $scope.poll_options.length && !$scope.submitted && $scope.ok) {
         $scope.submitted = true;
-        var post = {user: Auth.getCurrentUser()["_id"], poll_option: answer};
+        var post = {ip: ip, poll_option: answer};
         $http.post("/api/polls/" + id + "/answer", post).success(function(stuff){
           $location.path('/poll/' + id + '/r');
         });

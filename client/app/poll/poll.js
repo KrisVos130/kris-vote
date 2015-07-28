@@ -5,7 +5,6 @@ angular.module('workspaceApp')
     $routeProvider
       .when('/poll/:id', {
         templateUrl: 'app/poll/poll.html',
-        controller: 'PollCtrl',
-        authenticate: true
+        controller: 'PollCtrl'
       });
   });

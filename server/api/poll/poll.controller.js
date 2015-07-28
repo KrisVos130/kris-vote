@@ -35,8 +35,15 @@ exports.show = function(req, res, next){
   var id = parseInt(req.params.id);
   if (typeof id === 'number' && (id > 0)) {
     Poll.find({_id: id}, function(err, poll){
-      if (err);
-      res.end(JSON.stringify(poll));
+      if (!err && poll[0] !== undefined) {
+        poll = JSON.parse(JSON.stringify(poll));
+        poll[0].user_ip = ( req.headers["X-Forwarded-For"]
+                      || req.headers["x-forwarded-for"]
+                      || req.client.remoteAddress );
+        res.end(JSON.stringify(poll));
+      } else {
+        res.status(404).send("Not found");
+      }
     });
   } else {
     res.status(404).send("Not found");
@@ -50,8 +57,8 @@ exports.answer = function(req, res, next){
       if (err) {
         res.end();
       }
-      if (req.body.user !== null && req.body.poll_option > -1 && req.body.poll_option < poll.poll_options.length) {
-        poll.results.push({user: req.body.user, poll_option: req.body.poll_option});
+      if (req.body.ip !== undefined && req.body.poll_option > -1 && req.body.poll_option < poll.poll_options.length) {
+        poll.results.push({ip: req.body.ip, poll_option: req.body.poll_option});
         poll.markModified('results');
         poll.save(function(err, updatedPoll){
           if (err) {

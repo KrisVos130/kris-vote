@@ -41,8 +41,10 @@ angular.module('workspaceApp')
       } else {
         $scope.question = "404 - Poll not found.";
         $scope.ok = false;
+        $("#chart").css("display", "none");
       }
     }).error(function(error){
+      $("#chart").css("display", "none");
       if (error === "Not found") {
         $scope.question = "404 - Poll not found.";
         $scope.ok = false;
